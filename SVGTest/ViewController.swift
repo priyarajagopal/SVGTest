@@ -29,7 +29,7 @@ class ViewController: UIViewController {
         
         // Do any additional setup after loading the view, typically from a nib.
         self.scrollView.delegate = self
-        if let localFile = SVGKSourceLocalFile.internalSourceAnywhereInBundleUsingName("drawing9") {
+        if let localFile = SVGKSourceLocalFile.internalSourceAnywhereInBundleUsingName("drawing1") {
             loadSVGFromFile(localFile)
         }
         else {
@@ -173,7 +173,7 @@ extension ViewController :UIScrollViewDelegate{
                 // Highlight the selected shape
                 shapeLayer.fillColor = UIColor(red: 0.904, green: 0.941, blue: 0.247, alpha: 8.0).CGColor
                 
-                // Fetch details corresponding to selected element in selected layer
+                // Fetch details corresponding to selected element in selected layer. This could be used in future for fetching selected element properties
                 if let name = shapeLayer.name, element = self.contentView?.image.DOMDocument?.getElementById(name) as? SVGElement {
                     
                      print ("Id of selected element is \(element.identifier)")
@@ -190,10 +190,11 @@ extension ViewController :UIScrollViewDelegate{
            
             }
             else {
+                // WOuld happen if selectable area
                 // recursively traverse the sub layers from the root to get to the right layer ...but cant identify the shape
                 if let shapeLayers =  hitTestDescendent.sublayers {
                     print("Selected layer is \(hitTestDescendent)")
-                    self.changeFillColorRecursively(shapeLayers, color:  UIColor(red: 0.904, green: 0.941, blue: 0.247, alpha: 8.0))
+                  //  self.changeFillColorRecursively(shapeLayers, color:  UIColor(red: 0.904, green: 0.941, blue: 0.247, alpha: 8.0))
                    
                 }
             

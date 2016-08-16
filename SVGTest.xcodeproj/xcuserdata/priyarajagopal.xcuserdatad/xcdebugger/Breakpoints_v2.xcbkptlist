@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SVGTest/ViewController.swift"
-            timestampString = "491764555.598921"
+            timestampString = "493065857.893215"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "237"
-            endingLineNumber = "237"
+            startingLineNumber = "239"
+            endingLineNumber = "239"
             landmarkName = "textLayerWithText(_:atPosition:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SVGTest/ViewController.swift"
-            timestampString = "491764555.598921"
+            timestampString = "493065857.893215"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "247"
-            endingLineNumber = "247"
+            startingLineNumber = "249"
+            endingLineNumber = "249"
             landmarkName = "textLabelViewWithText(_:atPosition:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -122,11 +122,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SVGTest/ViewController.swift"
-            timestampString = "491764880.63925"
+            timestampString = "493065857.893215"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "259"
-            endingLineNumber = "259"
+            startingLineNumber = "261"
+            endingLineNumber = "261"
             landmarkName = "changeFillColorRecursively(_:color:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -138,11 +138,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SVGTest/ViewController.swift"
-            timestampString = "491764880.63925"
+            timestampString = "493065857.893215"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "263"
-            endingLineNumber = "263"
+            startingLineNumber = "265"
+            endingLineNumber = "265"
             landmarkName = "changeFillColorRecursively(_:color:)"
             landmarkType = "5">
             <Locations>
@@ -154,11 +154,11 @@
                   moduleName = "SVGTest"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/priyarajagopal/projects/apps/invicara/SVGTest/SVGTest/ViewController.swift"
-                  timestampString = "491767015.910154"
+                  timestampString = "491769749.193526"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "263"
-                  endingLineNumber = "263"
+                  startingLineNumber = "264"
+                  endingLineNumber = "264"
                   offsetFromSymbolStart = "538">
                </Location>
                <Location
@@ -169,11 +169,11 @@
                   moduleName = "SVGTest"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/priyarajagopal/projects/apps/invicara/SVGTest/SVGTest/ViewController.swift"
-                  timestampString = "491767015.910415"
+                  timestampString = "491769749.193676"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "263"
-                  endingLineNumber = "263"
+                  startingLineNumber = "264"
+                  endingLineNumber = "264"
                   offsetFromSymbolStart = "675">
                </Location>
             </Locations>
@@ -186,11 +186,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SVGTest/ViewController.swift"
-            timestampString = "491765942.445469"
+            timestampString = "493065857.893215"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "265"
-            endingLineNumber = "265"
+            startingLineNumber = "267"
+            endingLineNumber = "267"
             landmarkName = "changeFillColorRecursively(_:color:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -207,22 +207,6 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "174"
             endingLineNumber = "174"
-            landmarkName = "handleTapGesture(_:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SVGTest/ViewController.swift"
-            timestampString = "491766960.154565"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "195"
-            endingLineNumber = "195"
             landmarkName = "handleTapGesture(_:)"
             landmarkType = "5">
          </BreakpointContent>

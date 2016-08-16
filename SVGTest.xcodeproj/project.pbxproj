@@ -8,10 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		022D04B51D4B0C0300BB391B /* Map.svg in Resources */ = {isa = PBXBuildFile; fileRef = 022D04B41D4B0C0300BB391B /* Map.svg */; };
+		026683491D511D4F0085D2FE /* randomtext.svg in Resources */ = {isa = PBXBuildFile; fileRef = 026683481D511D4F0085D2FE /* randomtext.svg */; };
 		029280A21D499FD400DF6D6D /* Monkey.svg in Resources */ = {isa = PBXBuildFile; fileRef = 029280A11D499FD400DF6D6D /* Monkey.svg */; };
 		029280A41D49A1CB00DF6D6D /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 029280A31D49A1CB00DF6D6D /* CocoaLumberjack.framework */; };
 		029280A51D49A1DF00DF6D6D /* CocoaLumberjack.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 029280A31D49A1CB00DF6D6D /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		029280A71D49A28C00DF6D6D /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029280A61D49A28C00DF6D6D /* WebViewController.swift */; };
+		02AB37141D63915900A1CBB3 /* drawing1.svg in Resources */ = {isa = PBXBuildFile; fileRef = 02AB37131D63915900A1CBB3 /* drawing1.svg */; };
 		02ADAA6F1D49564200B6A73B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ADAA6E1D49564200B6A73B /* AppDelegate.swift */; };
 		02ADAA711D49564200B6A73B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ADAA701D49564200B6A73B /* ViewController.swift */; };
 		02ADAA741D49564200B6A73B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02ADAA721D49564200B6A73B /* Main.storyboard */; };
@@ -48,9 +50,11 @@
 
 /* Begin PBXFileReference section */
 		022D04B41D4B0C0300BB391B /* Map.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Map.svg; sourceTree = "<group>"; };
+		026683481D511D4F0085D2FE /* randomtext.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = randomtext.svg; sourceTree = "<group>"; };
 		029280A11D499FD400DF6D6D /* Monkey.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Monkey.svg; sourceTree = "<group>"; };
 		029280A31D49A1CB00DF6D6D /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CocoaLumberjack.framework; sourceTree = "<group>"; };
 		029280A61D49A28C00DF6D6D /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
+		02AB37131D63915900A1CBB3 /* drawing1.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = drawing1.svg; sourceTree = "<group>"; };
 		02ADAA6B1D49564200B6A73B /* SVGTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SVGTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		02ADAA6E1D49564200B6A73B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		02ADAA701D49564200B6A73B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -117,6 +121,8 @@
 		02ADAA6D1D49564200B6A73B /* SVGTest */ = {
 			isa = PBXGroup;
 			children = (
+				02AB37131D63915900A1CBB3 /* drawing1.svg */,
+				026683481D511D4F0085D2FE /* randomtext.svg */,
 				02FE121A1D4C20DD00D0A24B /* drawing24.svg */,
 				02FE121B1D4C20DD00D0A24B /* drawing9.svg */,
 				02FE121C1D4C20DD00D0A24B /* drawing10.svg */,
@@ -195,11 +201,13 @@
 			files = (
 				02FE12211D4C20DD00D0A24B /* drawing11.svg in Resources */,
 				02FE12201D4C20DD00D0A24B /* drawing10.svg in Resources */,
+				026683491D511D4F0085D2FE /* randomtext.svg in Resources */,
 				02ADAA791D49564200B6A73B /* LaunchScreen.storyboard in Resources */,
 				02ADAA761D49564200B6A73B /* Assets.xcassets in Resources */,
 				02ADAA741D49564200B6A73B /* Main.storyboard in Resources */,
 				02FE121E1D4C20DD00D0A24B /* drawing24.svg in Resources */,
 				02FE121F1D4C20DD00D0A24B /* drawing9.svg in Resources */,
+				02AB37141D63915900A1CBB3 /* drawing1.svg in Resources */,
 				022D04B51D4B0C0300BB391B /* Map.svg in Resources */,
 				029280A21D499FD400DF6D6D /* Monkey.svg in Resources */,
 			);
