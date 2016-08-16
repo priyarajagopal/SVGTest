@@ -11,9 +11,19 @@ import SVGKit
 
 
 
+struct LayerProperties {
+    let fillColor:CGColor?
+    init(fillColor:CGColor) {
+        self.fillColor = fillColor
+    }
+}
 
 class ViewController: UIViewController {
-
+    
+    var selectedLayerProperties:LayerProperties?
+    var selectedLayer:CAShapeLayer?
+    
+    
     @IBOutlet var scrollView: UIScrollView!
     #if SINGLELAYER
     // render as a single layer . ELement selecxtion can be more expensive
@@ -170,7 +180,16 @@ extension ViewController :UIScrollViewDelegate{
     //            shapeLayer?.borderColor = UIColor.redColor().CGColor
     //            shapeLayer?.borderWidth = 2.0
                 
+                // deselect the previously selected shape by restoring fill color
+                if let selectedLayer = selectedLayer, selectedLayerProperties = selectedLayerProperties {
+                    selectedLayer.fillColor = selectedLayerProperties.fillColor
+                }
+                
                 // Highlight the selected shape
+                
+                selectedLayerProperties = LayerProperties(fillColor:shapeLayer.fillColor ?? UIColor.clearColor().CGColor)
+                
+                
                 shapeLayer.fillColor = UIColor(red: 0.904, green: 0.941, blue: 0.247, alpha: 8.0).CGColor
                 
                 // Fetch details corresponding to selected element in selected layer. This could be used in future for fetching selected element properties
@@ -185,9 +204,9 @@ extension ViewController :UIScrollViewDelegate{
                     print("Element Identifier  not found")
                 }
                 
+                selectedLayer = shapeLayer
             
             
-           
             }
             else {
                 // WOuld happen if selectable area
