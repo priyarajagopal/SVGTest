@@ -22,6 +22,7 @@ class ViewController: UIViewController {
     
     var selectedLayerProperties:LayerProperties?
     var selectedLayer:CAShapeLayer?
+    var textLabelOfSelectedLayer:UILabel?
     
     
     @IBOutlet var scrollView: UIScrollView!
@@ -54,16 +55,16 @@ class ViewController: UIViewController {
 
 }
 
-
-extension ViewController :UIScrollViewDelegate{
+// MARK - SVG File Load
+extension ViewController {
     func loadSVGFromFile(source:SVGKSource) {
         if let source = source as? SVGKSourceLocalFile {
-       
+            
             SVGKImage.imageWithSource(source, onCompletion: { (loadedImage, parseResult) in
                 dispatch_async(dispatch_get_main_queue(), {
                     #if SINGLELAYER
-                    if let singleLayerContentView:SVGKFastImageView = self.internalLoadedResource(source, parserOutput: parseResult, createImageViewFromDocument: loadedImage) {
-                       
+                        if let singleLayerContentView:SVGKFastImageView = self.internalLoadedResource(source, parserOutput: parseResult, createImageViewFromDocument: loadedImage) {
+                            
                             self.singleLayerContentView = singleLayerContentView
                             
                             self.scrollView.addSubview(singleLayerContentView)
@@ -73,28 +74,36 @@ extension ViewController :UIScrollViewDelegate{
                             
                             self.scrollView.minimumZoomScale = 0.25
                             self.scrollView.maximumZoomScale = 5
-
+                            
                         }
                     #else
-                    if let contentView:SVGKImageView = self.internalLoadedResource(source, parserOutput: parseResult, createImageViewFromDocument: loadedImage) {
-                        
-                        self.contentView = contentView
-                        
-                        self.scrollView.addSubview(contentView)
-                        self.addTapGestureRecognizerToContentView()
-                        self.scrollView.contentSize = contentView.frame.size
-                        let screenToDocumentSizeRatio = self.scrollView.frame.size.width / contentView.frame.size.width;
-                        
-                        self.scrollView.minimumZoomScale = 0.25
-                        self.scrollView.maximumZoomScale = 5
-                        
-                    
+                        if let contentView:SVGKImageView = self.internalLoadedResource(source, parserOutput: parseResult, createImageViewFromDocument: loadedImage) {
+                            
+                            self.contentView = contentView
+                            
+                            self.scrollView.addSubview(contentView)
+                            self.addTapGestureRecognizerToContentView()
+                            self.scrollView.contentSize = contentView.frame.size
+                            
+                            self.scrollView.minimumZoomScale = 0.25
+                            self.scrollView.maximumZoomScale = 5
+                            
+                            
                         }
-                #endif
-
+                    #endif
+                    
                 })
             })
         }
+    }
+
+}
+
+
+extension ViewController :UIScrollViewDelegate{
+    
+    func scrollViewDidEndZooming(scrollView: UIScrollView, withView view: UIView?, atScale scale: CGFloat) {
+    //    self.contentView?.layer.contentsScale = scale
     }
     
     func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView?  {
@@ -160,6 +169,11 @@ extension ViewController :UIScrollViewDelegate{
     
         print(#function)
         let point:CGPoint = gesture.locationInView(self.contentView)
+        
+        // map the point from the SVG content view to the scoll view. If scroll view was zoomed , then
+        // the point position is adjusted accordingly
+        let mappedPoint:CGPoint = (self.contentView?.convertPoint(point, toView: self.scrollView))!
+        
         #if SINGLELAYER
         let layerForHitTesting = self.singleLayerContentView?.image.CALayerTree
         #else
@@ -173,7 +187,7 @@ extension ViewController :UIScrollViewDelegate{
         * coordinate space in which the point could be specified).
         */
         
-        if let hitTestDescendent = layerForHitTesting?.hitTest(point) {
+        if let hitTestDescendent = layerForHitTesting?.hitTest(mappedPoint) {
             
             
             if let shapeLayer = hitTestDescendent as? CAShapeLayer {
@@ -183,21 +197,24 @@ extension ViewController :UIScrollViewDelegate{
                 // deselect the previously selected shape by restoring fill color
                 if let selectedLayer = selectedLayer, selectedLayerProperties = selectedLayerProperties {
                     selectedLayer.fillColor = selectedLayerProperties.fillColor
+                    if let textLabelOfSelectedLayer = textLabelOfSelectedLayer {
+                        textLabelOfSelectedLayer.removeFromSuperview()
+                    }
                 }
                 
                 // Highlight the selected shape
                 
                 selectedLayerProperties = LayerProperties(fillColor:shapeLayer.fillColor ?? UIColor.clearColor().CGColor)
-                
-                
+ 
                 shapeLayer.fillColor = UIColor(red: 0.904, green: 0.941, blue: 0.247, alpha: 8.0).CGColor
                 
                 // Fetch details corresponding to selected element in selected layer. This could be used in future for fetching selected element properties
                 if let name = shapeLayer.name, element = self.contentView?.image.DOMDocument?.getElementById(name) as? SVGElement {
                     
-                     print ("Id of selected element is \(element.identifier)")
-                    let text = textLabelViewWithText(name,atPosition:point)
-                    self.contentView?.addSubview(text)
+                    print ("Id of selected element is \(element.identifier)")
+                    textLabelOfSelectedLayer = textLabelViewWithText(name,atPosition:point)
+                    self.contentView?.addSubview(textLabelOfSelectedLayer!)
+                    
                     
                 }
                 else {
@@ -205,7 +222,7 @@ extension ViewController :UIScrollViewDelegate{
                 }
                 
                 selectedLayer = shapeLayer
-            
+          
             
             }
             else {
