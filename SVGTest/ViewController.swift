@@ -10,7 +10,6 @@ import UIKit
 import SVGKit
 
 
-
 struct LayerProperties {
     let fillColor:CGColor?
     init(fillColor:CGColor) {
@@ -26,12 +25,13 @@ class ViewController: UIViewController {
     
     
     @IBOutlet var scrollView: UIScrollView!
+    
     #if SINGLELAYER
     // render as a single layer . ELement selecxtion can be more expensive
     var singleLayerContentView:SVGKFastImageView?
     #else
     // Render as a series of layers- every path component is a separate layer
-    var contentView: SVGKImageView?
+    var contentView: SVGKLayeredImageView?
     #endif
     
     
@@ -40,8 +40,8 @@ class ViewController: UIViewController {
         
         // Do any additional setup after loading the view, typically from a nib.
         self.scrollView.delegate = self
-        if let localFile = SVGKSourceLocalFile.internalSourceAnywhereInBundleUsingName("drawing1") {
-            loadSVGFromFile(localFile)
+        if let localFile = SVGKSourceLocalFile.internalSourceAnywhereInBundleUsingName("drawing00001") {
+            loadSVGFromFileWithCustomParserExtension(localFile)
         }
         else {
             print ("Couldnt load file")
@@ -77,7 +77,7 @@ extension ViewController {
                             
                         }
                     #else
-                        if let contentView:SVGKImageView = self.internalLoadedResource(source, parserOutput: parseResult, createImageViewFromDocument: loadedImage) {
+                        if let contentView:SVGKLayeredImageView = self.internalLoadedResource(source, parserOutput: parseResult, createImageViewFromDocument: loadedImage) {
                             
                             self.contentView = contentView
                             
@@ -95,6 +95,38 @@ extension ViewController {
                 })
             })
         }
+    }
+    
+    func loadSVGFromFileWithCustomParserExtension(source:SVGKSource) {
+        if let source = source as? SVGKSourceLocalFile {
+            
+             dispatch_async(dispatch_get_main_queue(), {
+                            
+                let parser: SVGKParser = SVGKParser.init(source: source)
+                parser.addDefaultSVGParserExtensions()
+                parser.addParserExtension(SVGParserExtn())
+                let parsedResult = parser.parseSynchronously()
+                self.printParsedDocument(parsedResult?.parsedDocument)
+                
+                
+                
+                let contentImage:SVGKImage =  SVGKImage(parsedSVG: parsedResult, fromSource: source)
+                if let contentView = SVGKLayeredImageView(SVGKImage: contentImage) {
+                    self.contentView = contentView
+                    
+                    self.scrollView.addSubview(contentView)
+                    self.addTapGestureRecognizerToContentView()
+                    self.scrollView.contentSize = contentView.frame.size
+                    
+                    self.scrollView.minimumZoomScale = 0.25
+                    self.scrollView.maximumZoomScale = 5
+                }
+             
+             });
+        }
+        
+ 
+        
     }
 
 }
@@ -119,7 +151,7 @@ extension ViewController :UIScrollViewDelegate{
      
         var newContentView:T?
    
-       // self.printParsedDocument(parseResult?.parsedDocument)
+        self.printParsedDocument(parseResult?.parsedDocument)
         if let document = document {
             if let _ = document.parseErrorsAndWarnings.rootOfSVGTree {
                 print (document.size)
@@ -149,10 +181,82 @@ extension ViewController :UIScrollViewDelegate{
     }
     
     private func printParsedDocument(domDocument:SVGDocument?) {
-        let element = domDocument?.getElementById("face")
-        print (element)
+        
+//        let rootElement = domDocument?.rootElement
+//        let element = matchingElementForElementId(rootElement
+//        print (element)
+        
+    
+//        let element = rootElement?.el
+//            print (element)
+//        }
+        
+//        let element = domDocument?.getElementById("422466")
+//        let attr = element?.getAttribute("nodeId")
+//        print ("422466 is \(element)")
+//        print ("attr is \(attr)")
         
     }
+
+    private func matchingElementForElementId(element:Node? , elementId:String)->Element? {
+        var rootElement:Node?
+        if element == nil {
+            rootElement = self.contentView?.image.DOMDocument?.rootElement
+            
+        }
+        else {
+            rootElement = element
+        }
+        guard rootElement?.nodeType == DOMNodeType_ELEMENT_NODE else {return nil}
+        
+        let elem = rootElement as! Element
+        if elem.getAttribute("elementid") == elementId {
+            return elem
+        }
+        
+        var index:UInt = 0
+        while index < rootElement!.childNodes.length {
+            let node = rootElement!.childNodes.item(index)
+            if let child = matchingElementForElementId(node,elementId: elementId) {
+                return child
+            }
+            index += 1
+        }
+        return nil
+    }
+    
+    
+    private func matchingElementsForElementId(element:Node? , elementId:String)->[Element]? {
+        var rootElement:Node?
+        if element == nil {
+            rootElement = self.contentView?.image.DOMDocument?.rootElement
+            
+        }
+        else {
+            rootElement = element
+        }
+        guard rootElement?.nodeType == DOMNodeType_ELEMENT_NODE else {return nil}
+        
+        let elem = rootElement as! Element
+        if elem.getAttribute("elementid") == elementId {
+            return [elem]
+        }
+        
+        var index:UInt = 0
+        
+        while index < rootElement!.childNodes.length {
+            var elements:[Element] = Array()
+            let node = rootElement!.childNodes.item(index)
+            if let child = matchingElementsForElementId(node,elementId: elementId) {
+                 elements.appendContentsOf(child)
+                return elements
+               
+            }
+            index += 1
+        }
+        return nil
+    }
+
     
     // MARK- Gesture Recognizers
     private func addTapGestureRecognizerToContentView() {
@@ -187,6 +291,23 @@ extension ViewController :UIScrollViewDelegate{
         * coordinate space in which the point could be specified).
         */
         
+    /*** Test to identify a layer based on elementId
+        let element = self.matchingElementForElementId(nil, elementId: "60")
+        let elements = self.matchingElementsForElementId(nil, elementId: "60")
+        for elem in elements! {
+            let elemId = elem.getAttribute("id")
+             print ("elementId is \(elemId)")
+            let elementLayer = layerForElementId((self.contentView?.layer)!,elementId: elemId)
+            print ("elementLayer is \(elementLayer)")
+            if let elementLayer = elementLayer {
+                elementLayer.fillColor = UIColor(red: 0.904, green: 0.941, blue: 0.247, alpha: 8.0).CGColor
+            }
+            
+            return
+        }
+ 
+ ****************/
+        
         if let hitTestDescendent = layerForHitTesting?.hitTest(mappedPoint) {
             
             
@@ -209,17 +330,27 @@ extension ViewController :UIScrollViewDelegate{
                 shapeLayer.fillColor = UIColor(red: 0.904, green: 0.941, blue: 0.247, alpha: 8.0).CGColor
                 
                 // Fetch details corresponding to selected element in selected layer. This could be used in future for fetching selected element properties
-                if let name = shapeLayer.name, element = self.contentView?.image.DOMDocument?.getElementById(name) as? SVGElement {
+                print ("shapelayer identifier is \(shapeLayer.valueForKey(kSVGElementIdentifier))")
+                 if let name = shapeLayer.name, element = self.contentView?.image.DOMDocument?.getElementById(name) as? SVGElement {
+                
+                    print ("objectId of selected element is \(element.getAttribute("elementid"))")
+                    print ("sysId of selected element is \(element.getAttribute("systemid"))")
                     
-                    print ("Id of selected element is \(element.identifier)")
-                    textLabelOfSelectedLayer = textLabelViewWithText(name,atPosition:point)
+                    let elemName = element.getAttribute("elementid")
+                        
+                    textLabelOfSelectedLayer = textLabelViewWithText(elemName,atPosition:point)
                     self.contentView?.addSubview(textLabelOfSelectedLayer!)
                     
                     
                 }
                 else {
+                    if let subLayers = hitTestDescendent.sublayers {
+                    print ("Id is \(self.getElementIdForLayer(subLayers))")
+                    
                     print("Element Identifier  not found")
+                    }
                 }
+                
                 
                 selectedLayer = shapeLayer
           
@@ -230,7 +361,7 @@ extension ViewController :UIScrollViewDelegate{
                 // recursively traverse the sub layers from the root to get to the right layer ...but cant identify the shape
                 if let shapeLayers =  hitTestDescendent.sublayers {
                     print("Selected layer is \(hitTestDescendent)")
-                  //  self.changeFillColorRecursively(shapeLayers, color:  UIColor(red: 0.904, green: 0.941, blue: 0.247, alpha: 8.0))
+                 //   self.changeFillColorRecursively(shapeLayers, color:  UIColor(red: 0.904, green: 0.941, blue: 0.247, alpha: 8.0))
                    
                 }
             
@@ -293,7 +424,6 @@ extension ViewController :UIScrollViewDelegate{
     
     // https://github.com/SVGKit/SVGKit/issues/98
     private func changeFillColorRecursively(sublayers: [AnyObject], color: UIColor){
-       // guard let sublayers = sublayers else {return nil }
         
         for layer in sublayers {
             
@@ -309,5 +439,30 @@ extension ViewController :UIScrollViewDelegate{
     
    
     }
+    
+    
+    // returns layer for element with specified Id
+    private func layerForElementId(layer:CALayer,elementId:String)->CAShapeLayer?{
+      
+        guard let contentImageView  = self.contentView else {return nil}
+        return contentImageView.image.layerWithIdentifier(elementId) as? CAShapeLayer
+        
+    }
+    
 
+    
+    // https://github.com/SVGKit/SVGKit/issues/98
+    private func getElementIdForLayer(sublayers: [CALayer])->String?{
+        // guard let sublayers = sublayers else {return nil }
+        if sublayers.count == 1 {
+            let shapeLayer = sublayers[0]
+            return shapeLayer.valueForKey(kSVGElementIdentifier) as? String
+        }
+        for layer in sublayers {
+            getElementIdForLayer(layer.sublayers!)
+        }
+        return nil
+        
+        
+    }
 }
